@@ -1,6 +1,12 @@
 import express, {Request, Response} from "express";
-import {AuthorizationToken, BlueButton} from "cms-bluebutton-sdk";
+import {AuthorizationToken, BlueButton} from "./sdk";
 import * as fs from "fs";
+
+//TODO HERE....  remove and recreate blue button functionality in a standalone js file.
+//LOOK FOR ALL bb. entries and create new functions in a new file that does them.
+//STEAL THE CODE FROM THE MAIN LIBRARY AS NECESSARY.
+//can keep authorizationToken, it's a class and could be useful.
+//need to replace all bluebutton functions.
 
 interface User {
     authToken?: AuthorizationToken,
@@ -120,6 +126,7 @@ function loadDataFile(dataset_name: string, resource_file_name: string): any {
 
 // data flow: front end fetch eob
 app.get("/api/data/benefit", (req: Request, res: Response) => {
+  console.log('asdf');
   if (loggedInUser.eobData) {
     res.json(loggedInUser.eobData);
   }
