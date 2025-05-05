@@ -3,6 +3,7 @@
  */
 import axios from "axios";
 import crypto from "crypto";
+import qs from "qs";
 
 import { BlueButton } from "./index";
 import { AuthorizationToken } from "./entities/AuthorizationToken";
@@ -67,7 +68,7 @@ export function generateAuthData(): AuthData {
 }
 
 function getAuthorizationUrl(bb: BlueButton): string {
-  return `${bb.baseUrl}/authorize`;
+  return `${bb.baseUrl}/oauth/authorize`;
 }
 
 export function generateAuthorizeUrl(
@@ -75,10 +76,11 @@ export function generateAuthorizeUrl(
   AuthData: AuthData
 ): string {
   const pkceParams = `code_challenge_method=S256&code_challenge=${AuthData.codeChallenge}`;
+  const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
 
   return `${getAuthorizationUrl(bb)}?client_id=${bb.clientId}&redirect_uri=${
     bb.callbackUrl
-  }&state=${AuthData.state}&scope=openid%20profile%20email&response_type=code&${pkceParams}`;
+  }&state=${AuthData.state}&${ audParam }&scope=launch/patient%20openid%20fhirUser%20offline_access%20patient/Observation.read%20patient/Observation.search&response_type=code&${pkceParams}`;
 }
 
 //  Generates post data for call to access token URL
@@ -123,7 +125,14 @@ function validateCallbackRequestQueryParams(
 }
 
 export function getAccessTokenUrl(bb: BlueButton): string {
-  return `${bb.baseUrl}/token/`;
+  
+  //TODO:  THIS IS HITTING THE OAUTH/TOKEN ENDPOINT FROM AUTH0?
+  // HOWEVER, THIS NEEDS TO GO TO security/smart/token.  HOWEVER,
+  // THIS TOKEN WILL NOT BE THE ONE ISSUED BY THE BASE ENDPOINT (I DON'T THINK?)
+  // BECAUSE THIS ISN'T THE ENDPOINT LISTED ON THE CONFORMANCE STATEMENT.
+  // BUT IT'S NOT NESTED UNDER /FHIR, IT'S UNDER SECURITY.
+  //return `${bb.baseUrl}/oauth/token/`;
+  return `${bb.baseUrl}/security/smart/token/`;
 }
 
 // Get an access token from callback code & state
