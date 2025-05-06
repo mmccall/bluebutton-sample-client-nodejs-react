@@ -9,6 +9,7 @@ import { BlueButton } from "./index";
 import { AuthorizationToken } from "./entities/AuthorizationToken";
 import { SDK_HEADERS } from "./enums/environments";
 import { Errors } from "./enums/errors";
+import { URLSearchParams } from "url";
 
 type PkceData = {
   codeChallenge: string;
@@ -50,12 +51,10 @@ export type AuthData = {
 
 export type TokenPostData = {
   client_id: string;
-  client_secret: string;
   code?: string;
   grant_type: string;
   redirect_uri: string;
   code_verifier: string;
-  code_challenge: string;
 };
 
 export function generateAuthData(): AuthData {
@@ -75,12 +74,26 @@ export function generateAuthorizeUrl(
   bb: BlueButton,
   AuthData: AuthData
 ): string {
-  const pkceParams = `code_challenge_method=S256&code_challenge=${AuthData.codeChallenge}`;
-  const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
 
-  return `${getAuthorizationUrl(bb)}?client_id=${bb.clientId}&redirect_uri=${
-    bb.callbackUrl
-  }&state=${AuthData.state}&${ audParam }&scope=launch/patient%20openid%20fhirUser%20offline_access%20patient/Observation.read%20patient/Observation.search&response_type=code&${pkceParams}`;
+
+  // modify this for using the smart auth endpoint.
+
+  const pkceParams = `code_challenge_method=S256&code_challenge=${AuthData.codeChallenge}`;
+
+  // need to make aud and config url the same...
+  const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
+  const scopeParam = qs.stringify( {'scope': 'openid launch/patient fhirUser patient/Patient.read offline_access'})
+
+  //scope=launch/patient%20openid%20fhirUser%20offline_access%20patient/Observation.read%20patient/Observation.search
+
+  //I'm getting the Auth0 prompt still in my app, something is amiss here..  this is authorize not token ex.
+
+  const fullRequest = `${getAuthorizationUrl(bb)}?client_id=${bb.clientId}&redirect_uri=${bb.callbackUrl
+    }&state=${AuthData.state}&${audParam}&${scopeParam}&response_type=code&${pkceParams}`;
+
+  console.log(fullRequest);
+
+  return fullRequest
 }
 
 //  Generates post data for call to access token URL
@@ -91,12 +104,10 @@ export function generateTokenPostData(
 ): TokenPostData {
   return {
     client_id: bb.clientId,
-    client_secret: bb.clientSecret,
     code: callbackCode,
     grant_type: "authorization_code",
     redirect_uri: bb.callbackUrl,
     code_verifier: authData.verifier,
-    code_challenge: authData.codeChallenge,
   };
 }
 
@@ -132,7 +143,7 @@ export function getAccessTokenUrl(bb: BlueButton): string {
   // BECAUSE THIS ISN'T THE ENDPOINT LISTED ON THE CONFORMANCE STATEMENT.
   // BUT IT'S NOT NESTED UNDER /FHIR, IT'S UNDER SECURITY.
   //return `${bb.baseUrl}/oauth/token/`;
-  return `${bb.baseUrl}/security/smart/token/`;
+  return `${bb.baseUrl}/security/smart/token`;
 }
 
 // Get an access token from callback code & state
@@ -150,10 +161,25 @@ export async function getAuthorizationToken(
     callbackRequestError
   );
 
+  const authHeader = Buffer.from(`${bb.clientId}:${bb.clientSecret}`).toString('base64');
+  const authorizationHeaders = {
+    Authorization: `Basic ${authHeader}`
+  }
+
   const postData = generateTokenPostData(bb, authData, callbackRequestCode);
-  const resp = await doPost(getAccessTokenUrl(bb), postData, {
-    headers: SDK_HEADERS,
-  });
+
+  //this needs to get a header added for Authorization: Basic, with a base64 encoding of client_id:client_secret
+  //note: removed sdk headers here.
+
+    console.log(getAccessTokenUrl(bb));
+    console.log(postData);
+
+    const resp = await doPost(getAccessTokenUrl(bb), postData, {
+      headers: authorizationHeaders,
+    });
+
+    console.log(resp);
+
 
   if (resp.data) {
     const authToken = new AuthorizationToken(resp.data);
@@ -199,5 +225,15 @@ export async function refreshAuthToken(
  * @returns the response
  */
 async function doPost(url: string, postData: any, config: any) {
+
+  /**
+  try {
+    await axios.post(url, new URLSearchParams(postData), config);
+  } catch (err) {
+    console.log(err);
+  }
+  */
+
+
   return await axios.post(url, new URLSearchParams(postData), config);
 }
