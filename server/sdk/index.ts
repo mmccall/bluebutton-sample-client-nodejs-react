@@ -230,6 +230,24 @@ export class BlueButton {
     );
   }
 
+    /**
+   * Returns the Observation resources for the current (authorized) beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Coverage resources
+   */
+    async getObservationData(
+      authToken: AuthorizationToken,
+      config: AxiosRequestConfig = {}
+    ) {
+      return await getFhirResource(
+        FhirResourceType.Observation,
+        authToken,
+        this,
+        config
+      );
+    }
+
   /**
    * Returns the profile for the current (authorized) beneficiary
    * @param authToken - AuthorizationToken with access token info

@@ -9,6 +9,11 @@ export type EOBRecord = {
     amount: number
 }
 
+export type PatientRecord = {
+    fullUrl: string,
+    resource: string,
+}
+
 export type ErrorResponse = {
     type: string,
     content: string,
@@ -16,6 +21,7 @@ export type ErrorResponse = {
 
 export default function Records() {
     const [records, setRecords] = useState<EOBRecord[]>([]);
+    const [patientRecords, setPatientRecords] = useState<PatientRecord[]>([]);
     const [message, setMessage] = useState<ErrorResponse>();
     /*
     * DEVELOPER NOTES:
@@ -35,6 +41,9 @@ export default function Records() {
     */
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : ''; 
+        
+        
+        // get eob data
         fetch(`${test_url}/api/data/benefit`)
             .then(res => {
                 return res.json();
@@ -57,7 +66,32 @@ export default function Records() {
                     }
                 }
             });
+
+
+                // get patient data
+                fetch(`${test_url}/api/data/patient`)
+                .then(res => {
+                    return res.json();
+                }).then(fhirData => {
+                    console.log(fhirData);
+                    if (fhirData.entry) {
+                        const records: PatientRecord[] = fhirData.entry.map((resourceData: any) => {
+                            return {
+                                fullUrl: resourceData.fullUrl,
+                                resource: JSON.stringify(resourceData.resource, null, "\t")
+                            }
+                        });
+                        setPatientRecords(records);
+                    }
+                    else {
+                        if (fhirData.message) {
+                            setMessage({"type": "error", "content": fhirData.message || "Unknown"})
+                        }
+                    }
+                });
     }, [])
+
+    
 
     if (message) {
         return (
@@ -113,7 +147,35 @@ export default function Records() {
                         })}
                     </TableBody>
                 </Table>
+
+                <Table className="ds-u-margin-top--2" stackable stackableBreakpoint="md">
+                    <TableCaption>Patient Data</TableCaption>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell id="column_1">Full URL</TableCell>
+                            <TableCell id="column_2">Resource</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {patientRecords.map(record => {
+                            return (
+                                <TableRow>
+                                    <TableCell stackedTitle="Full URL" headers="column_1">
+                                        {record.fullUrl}
+                                    </TableCell>
+                                    <TableCell stackedTitle="Resource" headers="column_2">
+                                        {record.resource}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
+
+
             </div>
+
+            
         );
     }
 }

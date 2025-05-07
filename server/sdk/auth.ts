@@ -82,7 +82,7 @@ export function generateAuthorizeUrl(
 
   // need to make aud and config url the same...
   const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
-  const scopeParam = qs.stringify( {'scope': 'openid launch/patient fhirUser patient/Patient.read offline_access'})
+  const scopeParam = qs.stringify( {'scope': 'openid launch/patient fhirUser patient/Patient.read offline_access patient/Observation.read'})
 
   //scope=launch/patient%20openid%20fhirUser%20offline_access%20patient/Observation.read%20patient/Observation.search
 

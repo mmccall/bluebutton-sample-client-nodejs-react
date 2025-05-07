@@ -11,6 +11,8 @@ import * as fs from "fs";
 interface User {
     authToken?: AuthorizationToken,
     eobData?: any,
+    observationData?: any,
+    patientData?: any,
     errors?: string[]
 }
 
@@ -79,12 +81,28 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
               // the app logic can fetch the beneficiary's data in app specific ways:
               // e.g. download EOB periodically etc.
               // access token can expire, SDK automatically refresh access token when that happens.
+
+              // always get patient results first, so you can use the appropriate ID.
+              const patientResults = await bb.getPatientData(authToken);
+
+
+
+              const observationResults = await bb.getObservationData(authToken);
+              
+
+              //just get authToken from last call if it changed during that.
               const eobResults = await bb.getExplanationOfBenefitData(authToken);
               authToken = eobResults.token; // in case authToken got refreshed during fhir call
+
+              console.log(observationResults);
       
               loggedInUser.authToken = authToken;
-      
               loggedInUser.eobData = eobResults.response?.data;
+              loggedInUser.observationData = observationResults.response?.data;
+              loggedInUser.patientData = patientResults.response?.data;
+
+              console.log(loggedInUser);
+
             } catch (e) {
               loggedInUser.eobData = {};
               process.stdout.write(ERR_QUERY_EOB + '\n');
@@ -124,15 +142,30 @@ function loadDataFile(dataset_name: string, resource_file_name: string): any {
     }
 }
 
-// data flow: front end fetch eob
+/**
+ * Data endpoints
+ */
+app.get("/api/data/patient", (req: Request, res: Response) => {
+  if (loggedInUser.patientData) {
+    res.json(loggedInUser.patientData);
+  }
+});
+
 app.get("/api/data/benefit", (req: Request, res: Response) => {
-  console.log('asdf');
   if (loggedInUser.eobData) {
     res.json(loggedInUser.eobData);
   }
 });
 
+// data flow: front end fetch eob
+app.get("/api/data/observation", (req: Request, res: Response) => {
+  if (loggedInUser.observationData) {
+    res.json(loggedInUser.observationData);
+  }
+});
+
 const port = 3001;
+
 app.listen(port, () => {
     process.stdout.write(`[server]: Server is running at https://localhost:${port}`);
     process.stdout.write("\n");
