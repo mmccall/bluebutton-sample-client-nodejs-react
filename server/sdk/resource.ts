@@ -6,12 +6,26 @@ import { refreshAuthToken } from "./auth";
 import { SDK_HEADERS } from "./enums/environments";
 
 // also serves as central registry for supported resource paths
+
 export enum FhirResourceType {
+  Condition = "fhir/Condition",
+  Coverage = "fhir/Coverage",
+  DiagnosticReport = "fhir/DiagnosticReport",
+  Encounter = "fhir/Encounter",
+  ExplanationOfBenefit = "fhir/ExplanationOfBenefit",
+  HealthcareService = "fhir/HealthcareService",
+  InsurancePlan = "fhir/InsurancePlan",
+  Location = "fhir/Location",
+  MedicationRequest = "fhir/MedicationRequest",
+  Observation = "fhir/Observation",
+  Organization = "fhir/Organization",
+  OrganizationAffiliation = "fhir/OrganizationAffiliation",
   Patient = "fhir/Patient",
-  Coverage = "fhir/Coverage/",
   Profile = "connect/userinfo",
-  ExplanationOfBenefit = "fhir/ExplanationOfBenefit/",
-  Observation = "fhir/Observation"
+  Practitioner = "fhir/Practitioner",
+  PractitionerRole = "fhir/PractitionerRole",
+  Procedure = "fhir/Procedure",
+  ServiceRequest = "fhir/ServiceRequest"
 }
 
 export function sleep(time: number) {
@@ -75,10 +89,6 @@ export async function getFhirResourceByPath(
     }
   }
 
-  newAuthToken.patient = 'nc.hhs|5318654403';
-
-  // modified to allow absolute path if it is under base URL
-  // tODO: THIS NEEDS NEW PATH
   const fhirUrl = resourcePath.startsWith(bb2.baseUrl)
     ? resourcePath
     : `${String(bb2.baseUrl)}/${resourcePath}`;

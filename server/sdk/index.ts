@@ -147,10 +147,8 @@ export class BlueButton {
       !Object.values(Environments).includes(config.environment)
     ) {
       throw new Error(
-        `Invalid environment (='${config.environment}'): must be ${
-          Environments.PRODUCTION
-        } or ${Environments.SANDBOX} or ${`Environments.TEST`} or ${
-          Environments.LOCAL
+        `Invalid environment (='${config.environment}'): must be ${Environments.PRODUCTION
+        } or ${Environments.SANDBOX} or ${`Environments.TEST`} or ${Environments.LOCAL
         }`
       );
     }
@@ -169,18 +167,90 @@ export class BlueButton {
         config.environment === Environments.PRODUCTION
           ? PRODUCTION_BASE_URL
           : config.environment === Environments.TEST
-          ? TEST_BASE_URL
-          : config.environment === Environments.LOCAL
-          ? LOCAL_BASE_URL
-          : SANDBOX_BASE_URL,
+            ? TEST_BASE_URL
+            : config.environment === Environments.LOCAL
+              ? LOCAL_BASE_URL
+              : SANDBOX_BASE_URL,
     };
   }
 
   /**
-   * Returns the ExplanationOfBenefitData resources for the authorized beneficiary
+   * Returns the Condition data resources for the authorized beneficiary
    * @param authToken - AuthorizationToken with access token info
    * @param config - extra request parameters
-   * @returns authToken and Fhir Bundle of ExplanationOfBenefitData resources
+   * @returns authToken and Fhir Bundle of Condition resources
+   */
+  async getConditionData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Condition,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the Coverage data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Coverage resources
+   */
+  async getCoverageData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Coverage,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the DiagnosticReport data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of DiagnosticReport resources
+   */
+  async getDiagnosticReport(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.DiagnosticReport,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+  * Returns the Encounter data resources for the authorized beneficiary
+  * @param authToken - AuthorizationToken with access token info
+  * @param config - extra request parameters
+  * @returns authToken and Fhir Bundle of Encounter resources
+  */
+  async getEncounter(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Encounter,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the ExplanationOfBenefit data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of ExplanationOfBenefit resources
    */
   async getExplanationOfBenefitData(
     authToken: AuthorizationToken,
@@ -188,6 +258,132 @@ export class BlueButton {
   ) {
     return await getFhirResource(
       FhirResourceType.ExplanationOfBenefit,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the HealthcareService data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of HealthcareService resources
+   */
+  async getHealthcareServiceData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.HealthcareService,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the InsurancePlan data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of InsurancePlan resources
+   */
+  async getInsurancePlanData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.InsurancePlan,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the Location data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Location resources
+   */
+  async getLocationData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Location,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the MedicationRequest data resources for the authorized beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of MedicationRequest resources
+   */
+  async getMedicationRequestData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.MedicationRequest,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the Observation resources for the current (authorized) beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Observation resources
+   */
+  async getObservationData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Observation,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the Organization resources for the current (authorized) beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Organization resources
+   */
+  async getOrganizationData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Organization,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+   * Returns the OrganizationAffiliation resources for the current (authorized) beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of OrganizationAffiliation resources
+   */
+  async getOrganizationAffiliationData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.OrganizationAffiliation,
       authToken,
       this,
       config
@@ -213,42 +409,6 @@ export class BlueButton {
   }
 
   /**
-   * Returns the Coverage resources for the current (authorized) beneficiary
-   * @param authToken - AuthorizationToken with access token info
-   * @param config - extra request parameters
-   * @returns authToken and Fhir Bundle of Coverage resources
-   */
-  async getCoverageData(
-    authToken: AuthorizationToken,
-    config: AxiosRequestConfig = {}
-  ) {
-    return await getFhirResource(
-      FhirResourceType.Coverage,
-      authToken,
-      this,
-      config
-    );
-  }
-
-    /**
-   * Returns the Observation resources for the current (authorized) beneficiary
-   * @param authToken - AuthorizationToken with access token info
-   * @param config - extra request parameters
-   * @returns authToken and Fhir Bundle of Coverage resources
-   */
-    async getObservationData(
-      authToken: AuthorizationToken,
-      config: AxiosRequestConfig = {}
-    ) {
-      return await getFhirResource(
-        FhirResourceType.Observation,
-        authToken,
-        this,
-        config
-      );
-    }
-
-  /**
    * Returns the profile for the current (authorized) beneficiary
    * @param authToken - AuthorizationToken with access token info
    * @param config - extra request parameters
@@ -265,6 +425,79 @@ export class BlueButton {
       config
     );
   }
+
+  /**
+   * Returns the Practitioner resources for the current (authorized) beneficiary
+   * @param authToken - AuthorizationToken with access token info
+   * @param config - extra request parameters
+   * @returns authToken and Fhir Bundle of Practitioner resources
+   */
+  async getPractitionerData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Practitioner,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+ * Returns the PractitionerRole resources for the current (authorized) beneficiary
+ * @param authToken - AuthorizationToken with access token info
+ * @param config - extra request parameters
+ * @returns authToken and Fhir Bundle of PractitionerRole resources
+ */
+  async getPractitionerRole(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.PractitionerRole,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+ * Returns the Procedure resources for the current (authorized) beneficiary
+ * @param authToken - AuthorizationToken with access token info
+ * @param config - extra request parameters
+ * @returns authToken and Fhir Bundle of Procedure resources
+ */
+  async getProcedureData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.Procedure,
+      authToken,
+      this,
+      config
+    );
+  }
+
+  /**
+* Returns the ServiceRequest resources for the current (authorized) beneficiary
+* @param authToken - AuthorizationToken with access token info
+* @param config - extra request parameters
+* @returns authToken and Fhir Bundle of ServiceRequest resources
+*/
+  async getServiceRequestData(
+    authToken: AuthorizationToken,
+    config: AxiosRequestConfig = {}
+  ) {
+    return await getFhirResource(
+      FhirResourceType.ServiceRequest,
+      authToken,
+      this,
+      config
+    );
+  }
+
 
   /**
    * Returns the resource(s) for the current (authorized) beneficiary as identified by the url path
