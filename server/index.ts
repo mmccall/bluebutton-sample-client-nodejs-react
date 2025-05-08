@@ -9,10 +9,25 @@ import * as fs from "fs";
 //need to replace all bluebutton functions.
 
 interface User {
-    authToken?: AuthorizationToken,
+    authToken?: AuthorizationToken,   
+    conditionData?: any,
+    coverageData?: any,
+    diagnosticReportData?: any,
+    encounterData?: any,
     eobData?: any,
+    healthcareServiceData?: any,
+    insurancePlanData?: any,
+    locationData?: any,
+    medicationRequestData?: any,
     observationData?: any,
+    organizationData?: any,
+    organizationAffiliationData?: any,
     patientData?: any,
+    profileData?: any,
+    practitionerData?: any,
+    practitionerRoleData?: any,
+    procedureData?: any,
+    serviceRequestData?: any,
     errors?: string[]
 }
 
@@ -77,29 +92,52 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
                 req.query.code,
                 req.query.state
               );
+              
               // data flow: after access granted
               // the app logic can fetch the beneficiary's data in app specific ways:
               // e.g. download EOB periodically etc.
               // access token can expire, SDK automatically refresh access token when that happens.
-
-              // always get patient results first, so you can use the appropriate ID.
-              const patientResults = await bb.getPatientData(authToken);
-
-
-
-              const observationResults = await bb.getObservationData(authToken);
-              
-
-              //just get authToken from last call if it changed during that.
+              const conditionResults = await bb.getConditionData(authToken);
+              const coverageResults = await bb.getCoverageData(authToken);
+              const diagnosticReportResults = await bb.getDiagnosticReportData(authToken);
+              const encounterResults = await bb.getEncounterData(authToken);
               const eobResults = await bb.getExplanationOfBenefitData(authToken);
-              authToken = eobResults.token; // in case authToken got refreshed during fhir call
-
-              console.log(observationResults);
-      
+              const healthcareServiceResults = await bb.getHealthcareServiceData(authToken);
+              const insurancePlanResults = await bb.getInsurancePlanData(authToken);
+              const locationResults = await bb.getLocationData(authToken);
+              const medicationRequestResults = await bb.getMedicationRequestData(authToken);
+              const observationResults = await bb.getObservationData(authToken);
+              const organizationResults = await bb.getObservationData(authToken);
+              const organizationAffillitionResults = await bb.getOrganizationAffiliationData(authToken);
+              const patientResults = await bb.getPatientData(authToken);
+              const profileResults = await bb.getProfileData(authToken);
+              const practitionerResults = await bb.getPractitionerData(authToken);
+              const practitionerRoleResults = await bb.getPractitionerRole(authToken);
+              const procedureResults = await bb.getProcedureData(authToken);
+              const serviceRequestResults = await bb.getServiceRequestData(authToken);
+           
+              //just get authToken from last call if it changed during that.
+              authToken = serviceRequestResults.token; // in case authToken got refreshed during fhir call
               loggedInUser.authToken = authToken;
+              
+              loggedInUser.conditionData = conditionResults.response?.data;
+              loggedInUser.coverageData = coverageResults.response?.data;
+              loggedInUser.diagnosticReportData = diagnosticReportResults.response?.data;
+              loggedInUser.encounterData = encounterResults.response?.data;
               loggedInUser.eobData = eobResults.response?.data;
+              loggedInUser.healthcareServiceData = healthcareServiceResults.response?.data;
+              loggedInUser.insurancePlanData = insurancePlanResults.response?.data;
+              loggedInUser.locationData = locationResults.response?.data;
+              loggedInUser.medicationRequestData = medicationRequestResults.response?.data;
               loggedInUser.observationData = observationResults.response?.data;
+              loggedInUser.organizationData = organizationResults.response?.data;
+              loggedInUser.organizationAffiliationData = organizationAffillitionResults.response?.data;
               loggedInUser.patientData = patientResults.response?.data;
+              loggedInUser.profileData = profileResults.response?.data;
+              loggedInUser.practitionerData = practitionerResults.response?.data;
+              loggedInUser.practitionerRoleData = practitionerRoleResults.response?.data;
+              loggedInUser.procedureData = procedureResults.response?.data;
+              loggedInUser.serviceRequestData = serviceRequestResults.response?.data;
 
               console.log(loggedInUser);
 

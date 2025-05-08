@@ -75,16 +75,44 @@ export function generateAuthorizeUrl(
   AuthData: AuthData
 ): string {
 
-
-  // modify this for using the smart auth endpoint.
-
   const pkceParams = `code_challenge_method=S256&code_challenge=${AuthData.codeChallenge}`;
 
-  // need to make aud and config url the same...
+  // TODO: need to make aud and config url the same...
   const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
-  const scopeParam = qs.stringify( {'scope': 'openid launch/patient fhirUser patient/Patient.read offline_access patient/Observation.read'})
 
-  //scope=launch/patient%20openid%20fhirUser%20offline_access%20patient/Observation.read%20patient/Observation.search
+  const scopesArray = [
+    "openid",
+    "launch/patient",
+    "fhirUser",
+    "offline_access",
+    "profile",
+    "patient/Condition.read",
+    "patient/Coverage.read",
+    "patient/Encounter.read",
+    "patient/ExplanationOfBenefit.read",
+    "patient/HealthcareService.read",
+    "patient/InsurancePlan.read",
+    "patient/Location.read",
+    "patient/MedicationRequest.read",
+    "patient/Observation.read",
+    "patient/Organization.read",
+    "patient/OrganizationAffilition.read",
+    "patient/Patient.read",
+    "patient/Practitioner.read",
+    "patient/PractitionerRole.read",
+    "patient/Procedure.read",
+    "patient/ServiceRequest.read",
+  ]
+
+  const scopesString = scopesArray.toString().replace(/,/g, " ");
+
+  console.log(scopesString);
+
+
+
+
+  // TODO: make scope params an array that we can stringify.
+  const scopeParam = qs.stringify( {'scope': scopesString})
 
   //I'm getting the Auth0 prompt still in my app, something is amiss here..  this is authorize not token ex.
 

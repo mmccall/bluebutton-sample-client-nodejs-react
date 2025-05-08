@@ -216,7 +216,7 @@ export class BlueButton {
    * @param config - extra request parameters
    * @returns authToken and Fhir Bundle of DiagnosticReport resources
    */
-  async getDiagnosticReport(
+  async getDiagnosticReportData(
     authToken: AuthorizationToken,
     config: AxiosRequestConfig = {}
   ) {
@@ -234,7 +234,7 @@ export class BlueButton {
   * @param config - extra request parameters
   * @returns authToken and Fhir Bundle of Encounter resources
   */
-  async getEncounter(
+  async getEncounterData(
     authToken: AuthorizationToken,
     config: AxiosRequestConfig = {}
   ) {
