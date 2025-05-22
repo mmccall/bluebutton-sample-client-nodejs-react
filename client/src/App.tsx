@@ -31,7 +31,20 @@ function App() {
           </div>
         </div>
         </TabPanel>
+        <TabPanel id="admin" tab="Administrative Data">
+        <h1>Administrative Data</h1>
+        <h2>Explanation of Benefit</h2>
+        <h2>Coverage</h2>
+
+        </TabPanel>
+        <TabPanel id="clinical" tab="Clinical Data">
+            <h1>Clinical Data</h1>
+            <h2>Laboratory Results</h2>
+
+        </TabPanel>
+        
         <TabPanel id="summary" tab="Summary">
+          
           <p className='ds-u-measure--base'>
             Blue Button 2.0 is a standards-based application programming interface (API) that delivers Medicare Part A, B, and D data for over 60 million Medicare beneficiaries. <a href="https://bluebutton.cms.gov/">Learn more about Blue Button 2.0</a>
           </p>

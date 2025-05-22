@@ -3,14 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ReactJson from 'react-json-view';
 import * as process from 'process';
 
-export type EOBRecord = {
-    id: string,
-    code: string,
-    display: string,
-    amount: number
-}
-
-export type PatientRecord = {
+export type FHIRRecord = {
     fullUrl: string,
     resource: string,
 }
@@ -21,9 +14,11 @@ export type ErrorResponse = {
 }
 
 export default function Records() {
-    //const [records, setRecords] = useState<EOBRecord[]>([]);
-    const [patientRecords, setPatientRecords] = useState<PatientRecord[]>([]);
-    const [observationRecords, setObservationRecords] = useState<PatientRecord[]>([]);
+
+    const [eobData, setEOBData] = useState<FHIRRecord[]>([]);
+    const [coverageData, setCoverageData] = useState<FHIRRecord[]>([]);
+
+
     const [message, setMessage] = useState<ErrorResponse>();
     /*
     * DEVELOPER NOTES:
@@ -41,18 +36,20 @@ export default function Records() {
     * There are multiple claim types within the BB2 Sandbox, not just PDE (Part-D Events - Drug/Medication Claims).  There are also
     * Carrier Claims, SNF, HHA, Hospice, Inpatient, and Outpatient
     */
+
+
+    /*
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : '';
 
 
         // get eob data
-        /**
         fetch(`${test_url}/api/data/benefit`)
             .then(res => {
                 return res.json();
             }).then(eobData => {
                 if (eobData.entry) {
-                    const records: EOBRecord[] = eobData.entry.map((resourceData: any) => {
+                    const records: FHIRRecord[] = eobData.entry.map((resourceData: any) => {
                         const resource = resourceData.resource;
                         return {
                             id: resource.id,
@@ -69,53 +66,9 @@ export default function Records() {
                     }
                 }
             });
-             */
 
-
-        // get patient data
-        fetch(`${test_url}/api/data/patient`)
-            .then(res => {
-                return res.json();
-            }).then(fhirData => {
-                console.log(fhirData);
-                if (fhirData.entry) {
-                    const records: PatientRecord[] = fhirData.entry.map((resourceData: any) => {
-                        return {
-                            fullUrl: resourceData.fullUrl,
-                            resource: resourceData.resource
-                        }
-                    });
-                    setPatientRecords(records);
-                }
-                else {
-                    if (fhirData.message) {
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
-                    }
-                }
-            });
-
-        // get observation data
-        fetch(`${test_url}/api/data/observation`)
-            .then(res => {
-                return res.json();
-            }).then(fhirData => {
-                console.log(fhirData);
-                if (fhirData.entry) {
-                    const records: PatientRecord[] = fhirData.entry.map((resourceData: any) => {
-                        return {
-                            fullUrl: resourceData.fullUrl,
-                            resource: resourceData.resource
-                        }
-                    });
-                    setObservationRecords(records);
-                }
-                else {
-                    if (fhirData.message) {
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
-                    }
-                }
-            });
     }, [])
+    */
 
 
 
@@ -156,11 +109,11 @@ export default function Records() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {patientRecords.map(record => {
+                        {eobData.map(record => {
                             return (
                                 <Tabs>
                                     <TabPanel key="display" id="display" tab="Display">
-                                        <p></p>
+                                        <p>asdf</p>
                                     </TabPanel>
                                     <TabPanel key="source" id="source" tab="Source">
                                         <ReactJson src={record} collapsed={ true } />
@@ -174,7 +127,7 @@ export default function Records() {
                 <h2>Observations</h2>
                 <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
                     
-                        {observationRecords.map(record => {
+                        {coverageData.map(record => {
                             return (
                                 <div className="bb-c-card default-card ds-u-margin--2">
                                 <Tabs>

@@ -12,7 +12,7 @@ export default function PatientData() {
     });
     async function goAuthorize() {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : ''
-        const authUrlResponseData = await axios.get(`${test_url}/api/authorize/authurl`)
+        await axios.get(`${test_url}/api/authorize/authurl`)
         .then(response => {
             return response.data;
         })
@@ -22,7 +22,6 @@ export default function PatientData() {
         .catch(error => {
             window.location.href = "/";
         });
-        console.log(authUrlResponseData);
     }
     async function goLoadDefaults() {
         const loadDefaultsResponse = await axios.get(`/api/bluebutton/loadDefaults`);

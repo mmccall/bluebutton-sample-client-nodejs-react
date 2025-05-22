@@ -107,7 +107,7 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
               const locationResults = await bb.getLocationData(authToken);
               const medicationRequestResults = await bb.getMedicationRequestData(authToken);
               const observationResults = await bb.getObservationData(authToken);
-              const organizationResults = await bb.getObservationData(authToken);
+              const organizationResults = await bb.getOrganizationData(authToken);
               const organizationAffillitionResults = await bb.getOrganizationAffiliationData(authToken);
               const patientResults = await bb.getPatientData(authToken);
               const profileResults = await bb.getProfileData(authToken);
@@ -183,6 +183,13 @@ function loadDataFile(dataset_name: string, resource_file_name: string): any {
 /**
  * Data endpoints
  */
+
+app.get("/api/data/profile", (req: Request, res: Response) => {
+  if (loggedInUser.profileData) {
+    res.json(loggedInUser.profileData);
+  }
+});
+
 app.get("/api/data/patient", (req: Request, res: Response) => {
   if (loggedInUser.patientData) {
     res.json(loggedInUser.patientData);
