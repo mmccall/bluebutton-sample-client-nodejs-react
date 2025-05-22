@@ -13,14 +13,10 @@ function App() {
     <Router>
       <Tabs tablistClassName="ds-u-margin-top--3">
         <TabPanel id="patient" tab="Patient info">
-          <h2>Patient information</h2>
-          <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-            <div className="bb-c-card default-card">
+          <div className="ds-u-display--flex">
+            <div className="bb-c-card ds-l-col--12">
               <Patient />
-            </div>          
-            <div className="bb-c-card default-card">
-              <PatientData />
-            </div>          
+            </div>                   
           </div>
           {}
           <Records /> 

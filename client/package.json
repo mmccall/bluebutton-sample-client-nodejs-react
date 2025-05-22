@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
-    "@cmsgov/design-system": "^10.1.0",
+    "@cmsgov/design-system": "^12.2.0",
     "@types/node": "^22.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
