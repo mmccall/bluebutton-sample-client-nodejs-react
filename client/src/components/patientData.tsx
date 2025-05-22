@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import * as process from 'process'; 
 
 export default function PatientData() {
-    const [header] = useState('Add your Medicare Prescription Drug data');
+    const [header] = useState('Add your Medicaid data');
     const [settingsState] = useState<SettingsType>({
         useDefaultDataButton: false, // Set to true to use hard coded data
     });
@@ -36,11 +36,11 @@ export default function PatientData() {
     */
     return (
         <div>
-            <h3>Medicare Prescription Drug Records</h3>
+            <h3>Medicaid Administrative and Clinical Records</h3>
             <div className="ds-u-display--flex ds-u-flex-direction--row ds-u-align-items--start">
                 <img src={chart} alt="Chart icon" className=""/>
                 <p className='ds-u-padding-x--2 ds-u-margin-top--0'>
-                    John, you can now allow Springfield General Hospital access to your Medicare prescription drug records!
+                    You can now allow our mobile application to accesss your NC Medicaid records!
                 </p>
             </div>
             <div className='ds-u-margin-top--2 ds-u-border-top--2'>
