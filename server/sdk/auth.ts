@@ -72,7 +72,8 @@ function getAuthorizationUrl(bb: BlueButton): string {
 
 export function generateAuthorizeUrl(
   bb: BlueButton,
-  AuthData: AuthData
+  AuthData: AuthData,
+  patientScope: string
 ): string {
 
   const pkceParams = `code_challenge_method=S256&code_challenge=${AuthData.codeChallenge}`;
@@ -80,7 +81,7 @@ export function generateAuthorizeUrl(
   // TODO: need to make aud and config url the same...
   const audParam = qs.stringify( {'aud': 'https://ncdhhs-test.medicasoft.us/fhir'});
 
-  const scopesArray = [
+  let scopesArray = [
     "openid",
     "launch/patient",
     "fhirUser",
@@ -104,12 +105,14 @@ export function generateAuthorizeUrl(
     "patient/ServiceRequest.read",
   ]
 
+  // optionally add in patient scope to request for authorized representatives.
+  if (patientScope.length > 0) {
+    scopesArray.push(patientScope)
+  }
+
   const scopesString = scopesArray.toString().replace(/,/g, " ");
 
   console.log(scopesString);
-
-
-
 
   // TODO: make scope params an array that we can stringify.
   const scopeParam = qs.stringify( {'scope': scopesString})

@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import * as process from 'process';
 import { Button } from '@cmsgov/design-system';
 import axios from 'axios';
-import { isUndefined } from 'util';
 
 export type Authorization = {
-    displayName: string,
+    firstName: string,
+    lastName: string,
     fhirUser: string
 }
 
@@ -16,19 +16,13 @@ export type Profile = {
     user_authorizations?: Array<Authorization>
 }
 
-
-
 export default function Patient() {
 
     const [userProfile, setUserProfile] = useState<Profile>();
-    const [header] = useState('Add your Medicaid data');
-    const [settingsState] = useState<SettingsType>({
-        useDefaultDataButton: false, // Set to true to use hard coded data
-    });
-
+    const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : ''
 
     async function goAuthorize() {
-        const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : ''
+        
         await axios.get(`${test_url}/api/authorize/authurl`)
         .then(response => {
             return response.data;
@@ -39,6 +33,37 @@ export default function Patient() {
         .catch(error => {
             window.location.href = "/";
         });
+    }
+
+    /**
+     * Requests data for an authorized representative
+     * 
+     */
+    async function loadBeneficiaryData(beneficiaryId: String) {
+ 
+        const payload = {
+            beneficiaryId: beneficiaryId
+        }
+
+        await axios({
+            method: 'post',
+            url: `${test_url}/api/authorize/beneficiary`,
+            data: payload,
+            headers: {
+                "Content-Type": 'application/json'
+            }            
+        })
+        .then(response => {
+            return response.data;
+        })
+        .then(data => {
+            window.location.href = data;
+        })
+        .catch(error => {
+            //window.location.href = "/";
+            console.error(error);
+        });
+
     }
 
     useEffect(() => {
@@ -91,10 +116,11 @@ export default function Patient() {
                     {userProfile?.user_authorizations?.map(authorization => {
                             return (
                                 <ul>
-                                    <li>
-                                        {authorization.displayName}
+                                    <li key={authorization.firstName}>
+                                        {authorization.firstName} {authorization.lastName}
                                         <ul>
                                             <li>{authorization.fhirUser}</li>
+                                            <Button variation="solid" onClick={() => loadBeneficiaryData(authorization.fhirUser)} className="ds-l-col--8" >Load Data</Button>
                                         </ul>
                                     </li>
                                 </ul>

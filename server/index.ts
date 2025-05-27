@@ -39,6 +39,8 @@ const ERR_MISSING_STATE = "State is required when using PKCE"
 
 const app = express();
 
+app.use(express.json());
+
 const bb = new BlueButton();
 const authData = bb.generateAuthData();
 
@@ -63,10 +65,26 @@ function clearBB2Data() {
 
 let authToken: AuthorizationToken;
 
-// auth flow: response with URL to redirect to Medicare.gov beneficiary login
+// authorization flow for base user.
 app.get("/api/authorize/authurl", (req: Request, res: Response) => {
-  res.send(bb.generateAuthorizeUrl(authData));
+  res.send(bb.generateAuthorizeUrl(authData, ""));
 });
+
+//authorization flow for auth rep user.
+app.post("/api/authorize/beneficiary", (req: Request, res: Response) => {
+
+  //Post receives the beneficiary id, restructure into custom scope
+  
+
+
+  let patientScope = `Patient.r?_id=${req.body.beneficiaryId.replace("Patient/", "")}`;
+  console.log(patientScope);
+  res.send(bb.generateAuthorizeUrl(authData, patientScope));
+
+});
+
+
+
 
 // auth flow: oauth2 call back
 app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
@@ -180,17 +198,29 @@ function loadDataFile(dataset_name: string, resource_file_name: string): any {
     }
 }
 
+app.post("/api/beneficiaryData",(req: Request, res: Response) => {
+  console.log(req.body);
+  //get beneficiary ID, and inject it as 
+  // we don't need this endpoint, just define the Patient resource on the request.
+
+
+});
+
+
 /**
  * Data endpoints
  */
 
 app.get("/api/data/profile", (req: Request, res: Response) => {
+  
+  //Profile never changes, and logged in user never does either.
   if (loggedInUser.profileData) {
     res.json(loggedInUser.profileData);
   }
 });
 
 app.get("/api/data/patient", (req: Request, res: Response) => {
+  console.log(req.params);
   if (loggedInUser.patientData) {
     res.json(loggedInUser.patientData);
   }

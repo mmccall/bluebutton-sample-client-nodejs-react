@@ -580,10 +580,11 @@ export class BlueButton {
   /**
    * Generate URL for beneficiary login (Medicare.gov)
    * @param authData - PKCE data used in the URL
+   * @param patientScope - Optional patient scope to add to request
    * @returns the URL direct to beneficiary login
    */
-  generateAuthorizeUrl(authData: AuthData): string {
-    return generateAuthorizeUrl(this, authData);
+  generateAuthorizeUrl(authData: AuthData, patientScope: string): string {
+    return generateAuthorizeUrl(this, authData, patientScope);
   }
 
   /**
