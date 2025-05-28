@@ -207,35 +207,130 @@ app.post("/api/beneficiaryData",(req: Request, res: Response) => {
 });
 
 
-/**
- * Data endpoints
- */
 
-app.get("/api/data/profile", (req: Request, res: Response) => {
-  
-  //Profile never changes, and logged in user never does either.
-  if (loggedInUser.profileData) {
-    res.json(loggedInUser.profileData);
-  }
-});
-
-app.get("/api/data/patient", (req: Request, res: Response) => {
-  console.log(req.params);
-  if (loggedInUser.patientData) {
-    res.json(loggedInUser.patientData);
-  }
-});
-
+// Retire me...
 app.get("/api/data/benefit", (req: Request, res: Response) => {
   if (loggedInUser.eobData) {
     res.json(loggedInUser.eobData);
   }
 });
 
-// data flow: front end fetch eob
+
+/**
+ * Data endpoints
+ */
+
+app.get("/api/data/condition", (req: Request, res: Response) => {
+  if (loggedInUser.conditionData) {
+    res.json(loggedInUser.conditionData);
+  }
+});
+
+app.get("/api/data/coverage", (req: Request, res: Response) => {
+  if (loggedInUser.coverageData) {
+    res.json(loggedInUser.coverageData);
+  }
+});
+
+app.get("/api/data/diagnosticReport", (req: Request, res: Response) => {
+  if (loggedInUser.diagnosticReportData) {
+    res.json(loggedInUser.diagnosticReportData);
+  }
+});
+
+app.get("/api/data/encounter", (req: Request, res: Response) => {
+  if (loggedInUser.encounterData) {
+    res.json(loggedInUser.encounterData);
+  }
+});
+
+app.get("/api/data/explanationOfBenefit", (req: Request, res: Response) => {
+  if (loggedInUser.eobData) {
+    res.json(loggedInUser.eobData);
+  }
+});
+
+app.get("/api/data/healthcareService", (req: Request, res: Response) => {
+  if (loggedInUser.healthcareServiceData) {
+    res.json(loggedInUser.healthcareServiceData);
+  }
+});
+
+app.get("/api/data/insurancePlan", (req: Request, res: Response) => {
+  if (loggedInUser.insurancePlanData) {
+    res.json(loggedInUser.insurancePlanData);
+  }
+});
+
+app.get("/api/data/location", (req: Request, res: Response) => {
+  if (loggedInUser.locationData) {
+    res.json(loggedInUser.locationData);
+  }
+});
+
+app.get("/api/data/medicationRequest", (req: Request, res: Response) => {
+  if (loggedInUser.medicationRequestData) {
+    res.json(loggedInUser.medicationRequestData);
+  }
+});
+
 app.get("/api/data/observation", (req: Request, res: Response) => {
   if (loggedInUser.observationData) {
     res.json(loggedInUser.observationData);
+  }
+});
+
+app.get("/api/data/organization", (req: Request, res: Response) => {
+  if (loggedInUser.organizationData) {
+    res.json(loggedInUser.organizationData);
+  }
+});
+
+app.get("/api/data/organizationAffiliation", (req: Request, res: Response) => {
+  if (loggedInUser.organizationAffiliationData) {
+    res.json(loggedInUser.organizationAffiliationData);
+  }
+});
+
+app.get("/api/data/organizationAffiliation", (req: Request, res: Response) => {
+  if (loggedInUser.organizationAffiliationData) {
+    res.json(loggedInUser.organizationAffiliationData);
+  }
+});
+
+app.get("/api/data/patient", (req: Request, res: Response) => {
+  if (loggedInUser.patientData) {
+    res.json(loggedInUser.patientData);
+  }
+});
+
+app.get("/api/data/profile", (req: Request, res: Response) => {
+  if (loggedInUser.profileData) {
+    res.json(loggedInUser.profileData);
+  }
+});
+
+app.get("/api/data/practitioner", (req: Request, res: Response) => {
+  if (loggedInUser.practitionerData) {
+    res.json(loggedInUser.practitionerData);
+  }
+});
+
+app.get("/api/data/practitionerRole", (req: Request, res: Response) => {
+  if (loggedInUser.practitionerRoleData) {
+    res.json(loggedInUser.practitionerRoleData);
+  }
+});
+
+app.get("/api/data/procedure", (req: Request, res: Response) => {
+  if (loggedInUser.procedureData) {
+    res.json(loggedInUser.procedureData);
+  }
+});
+
+app.get("/api/data/serviceRequest", (req: Request, res: Response) => {
+  if (loggedInUser.serviceRequestData) {
+    res.json(loggedInUser.serviceRequestData);
   }
 });
 
