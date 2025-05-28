@@ -2,6 +2,7 @@ import { Table, TableCaption, TableRow, TableCell, TableHead, TableBody, Tabs, T
 import React, { useEffect, useState } from 'react';
 import ReactJson from 'react-json-view';
 import * as process from 'process';
+import FHIRPatient from './fhir/patient';
 
 export type EOBRecord = {
     id: string,
@@ -145,64 +146,11 @@ export default function Records() {
         );
     } else {
         return (
+            
             <div className='full-width-card'>
-                        {patientRecords.map(record => {
-                            return (
-                                <div className="ds-l-col--6 ds-u-margin--2">
-                                <Tabs>
-                                    <TabPanel key="display" id="display" tab="Display">
-                                        <Table>
-                                            
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell
-                                                        key="Description"
-                                                        id="description"
-                                                    >
-                                                        Description
-                                                    </TableCell>
-                                                    <TableCell
-                                                        key="Value"
-                                                        id="value"
-                                                    >
-                                                        Value
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableRow>
-                                                <TableCell>
-                                                    Name:
-                                                </TableCell>
-                                                <TableCell>
-                                                    {record.resource.name[0].text}
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                    Date of Birth:
-                                                </TableCell>
-                                                <TableCell>
-                                                    {record.resource.birthDate}
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell>
-                                                   Identifier:
-                                                </TableCell>
-                                                <TableCell>
-                                                    {record.resource.id}
-                                                </TableCell>
-                                            </TableRow>
-                                        </Table>
-                                    </TabPanel>
-                                    <TabPanel key="source" id="source" tab="Source">
-                                        <ReactJson src={record} collapsed={ true } />
-                                    </TabPanel>
-                                </Tabs>
-                                </div>
-                            )
-                        })}
-
+                <h1>Patient Entries</h1>
+                <FHIRPatient patientData={patientRecords}/>
+                        
                 <h2>Observations</h2>
                 <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
                     
