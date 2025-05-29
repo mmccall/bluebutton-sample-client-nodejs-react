@@ -4,6 +4,7 @@ import ReactJson from 'react-json-view';
 import * as process from 'process';
 import FHIRPatient from './fhir/patient';
 import FHIRCoverage from './fhir/coverage';
+import FHIRCondition from './fhir/condition';
 
 export type EOBRecord = {
     id: string,
@@ -179,7 +180,8 @@ export default function Records() {
                 <FHIRPatient patientData={patientRecords}/>
                 <h1>Coverage Entries</h1>
                 <FHIRCoverage />
-                        
+                <h1>Condition Entries</h1>
+                <FHIRCondition />        
                 <h2>Observations</h2>
                 <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
                     
