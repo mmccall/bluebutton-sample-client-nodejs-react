@@ -21,8 +21,6 @@ export default function FHIRCoverage() {
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : '';
 
-        console.log('hi');
-
         // get coverage data
         fetch(`${test_url}/api/data/coverage`)
             .then(res => {

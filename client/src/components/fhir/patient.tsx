@@ -14,11 +14,11 @@ export type PatientRoot = {
 
 export default function FHIRPatient( {patientData} ) {
     return (
-        <div>
+        <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
 
             {patientData.map(record => {
                 return (
-                    <div className="ds-l-col--6 ds-u-margin--2">
+                    <div className="default-card ds-u-margin--2" >
                         <Tabs>
                             <TabPanel key="display" id="display" tab="Display">
                                 <Table>

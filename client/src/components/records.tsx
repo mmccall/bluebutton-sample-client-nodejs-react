@@ -176,7 +176,7 @@ export default function Records() {
     } else {
         return (
             
-            <div className='full-width-card'>
+            <div className='full-width-card ds-u-flex-direction--row'>
                 <h1>Patient Entries</h1>
                 <FHIRPatient patientData={patientRecords}/>
                 <h1>Coverage Entries</h1>
