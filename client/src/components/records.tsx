@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ReactJson from 'react-json-view';
 import * as process from 'process';
 import FHIRPatient from './fhir/patient';
+import FHIRCoverage from './fhir/coverage';
 
 export type EOBRecord = {
     id: string,
@@ -12,6 +13,11 @@ export type EOBRecord = {
 }
 
 export type PatientRecord = {
+    fullUrl: string,
+    resource: string,
+}
+
+export type FHIRRecord = {
     fullUrl: string,
     resource: string,
 }
@@ -72,6 +78,27 @@ export default function Records() {
             });
              */
 
+        // get coverage data
+        fetch(`${test_url}/api/data/coverage`)
+        .then(res => {
+            return res.json();
+        }).then(fhirData => {
+            console.log(fhirData);
+            if (fhirData.entry) {
+                const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
+                    return {
+                        fullUrl: resourceData.fullUrl,
+                        resource: resourceData.resource
+                    }
+                });
+                setCoverageRecords(records);
+            }
+            else {
+                if (fhirData.message) {
+                    setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                }
+            }
+        });
 
         // get patient data
         fetch(`${test_url}/api/data/patient`)
@@ -150,6 +177,8 @@ export default function Records() {
             <div className='full-width-card'>
                 <h1>Patient Entries</h1>
                 <FHIRPatient patientData={patientRecords}/>
+                <h1>Coverage Entries</h1>
+                <FHIRCoverage />
                         
                 <h2>Observations</h2>
                 <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
