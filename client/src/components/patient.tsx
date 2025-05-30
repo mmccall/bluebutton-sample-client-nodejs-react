@@ -60,7 +60,6 @@ export default function Patient() {
             window.location.href = data;
         })
         .catch(error => {
-            //window.location.href = "/";
             console.error(error);
         });
 
