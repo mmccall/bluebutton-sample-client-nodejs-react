@@ -15,8 +15,9 @@ export type ErrorResponse = {
 }
 
 export default function FHIRCondition() {
-    const [coverageRecords, setCoverageRecords] = useState<FHIRRecord[]>([]);
+    const [bundleRecords, setBundleRecords] = useState<FHIRRecord[]>([]);
     const [message, setMessage] = useState<ErrorResponse>();
+    const [bundleCount, setBundleCount] = useState(0)
 
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : '';
@@ -24,19 +25,17 @@ export default function FHIRCondition() {
         // get coverage data
         fetch(`${test_url}/api/data/condition`)
             .then(res => {
-                console.log(res);
                 return res.json();
             }).then(fhirData => {
-                console.log('wat');
-                console.log(fhirData);
                 if (fhirData.resourceType === "Bundle") {
+                    setBundleCount(fhirData.total)
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
                         return {
                             fullUrl: resourceData.fullUrl,
                             resource: resourceData.resource
                         }
                     });
-                    setCoverageRecords(records);
+                    setBundleRecords(records);
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
@@ -74,7 +73,8 @@ export default function FHIRCondition() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                {coverageRecords.map(record => {
+                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h2></div>
+                {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">
                             <Tabs>

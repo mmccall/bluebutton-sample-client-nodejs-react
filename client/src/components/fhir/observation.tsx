@@ -75,7 +75,7 @@ export default function FHIRObservation() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}</h2></div>
+                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h2></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">

@@ -25,51 +25,51 @@ export default function Records() {
                 <Tabs tablistClassName="ds-u-margin-top--3">
                     <TabPanel id="patient" tab="Patient Records">
                       <div>
-                        <h2>Patient Entries</h2>
+                        <h2>Patients</h2>
                         <FHIRPatient />               
                       </div>
                 </TabPanel>
                 <TabPanel id="clinical" tab="Clinical Records">
                       <div>
-                        <h1>Conditions</h1>
+                        <h2>Conditions</h2>
                         <FHIRCondition />        
-                        <h1>Diagnostic Reports</h1>
+                        <h2>Diagnostic Reports</h2>
                         <FHIRDiagnosticReport />
-                        <h1>Encounters</h1>
+                        <h2>Encounters</h2>
                         <FHIREncounter />  
-                        <h1>Medication Requests</h1>
+                        <h2>Medication Requests</h2>
                         <FHIRMedicationRequest />
-                        <h1>Observations</h1>
+                        <h2>Observations</h2>
                         <FHIRObservation />
-                        <h1>Procedures</h1>
+                        <h2>Procedures</h2>
                         <FHIRProcedure />
-                        <h1>Service Request</h1>
+                        <h2>Service Requests</h2>
                         <FHIRServiceRequest />
                       </div>
                 </TabPanel>
                 <TabPanel id="administrative" tab="Administrative Records">
                       <div>
-                        <h1>Explanations Of Benefits</h1>     
+                        <h2>Explanations Of Benefits</h2>     
                         <FHIRExplanationOfBenefit /> 
-                        <h1>Coverage</h1>     
+                        <h2>Coverages</h2>     
                         <FHIRCoverage /> 
                       </div>
                 </TabPanel>
                 <TabPanel id="supporting" tab="Supporting Records">
                     <div>
-                        <h1>Healthcare Service</h1>
+                        <h2>Healthcare Services</h2>
                         <FHIRHealthcareService />
-                        <h1>Insurance Plan</h1>
+                        <h2>Insurance Plans</h2>
                         <FHIRInsurancePlan />
-                        <h1>Location</h1>
+                        <h2>Locations</h2>
                         <FHIRLocation />
-                        <h1>Organization</h1>
+                        <h2>Organizations</h2>
                         <FHIROrganization />
-                        <h1>Organization Affiliation</h1>
+                        <h2>Organization Affiliations</h2>
                         <FHIROrganizationAffiliation />
-                        <h1>Practitioner</h1>
+                        <h2>Practitioners</h2>
                         <FHIRPractitioner />
-                        <h1>Practitioner Role</h1>
+                        <h2>Practitioner Roles</h2>
                         <FHIRPractitionerRole />
                     </div>
                 </TabPanel>
