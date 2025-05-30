@@ -5,7 +5,9 @@ import * as process from 'process';
 import FHIRPatient from './fhir/patient';
 import FHIRCoverage from './fhir/coverage';
 import FHIRCondition from './fhir/condition';
+import FHIREncounter from './fhir/encounter';
 import FHIRDiagnosticReport from './fhir/diagnosticReport';
+import FHIRExplanationOfBenefit from './fhir/explanationOfBenefit';
 
 export type EOBRecord = {
     id: string,
@@ -85,7 +87,6 @@ export default function Records() {
         .then(res => {
             return res.json();
         }).then(fhirData => {
-            console.log(fhirData);
             if (fhirData.entry) {
                 const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
                     return {
@@ -107,7 +108,6 @@ export default function Records() {
             .then(res => {
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.entry) {
                     const records: PatientRecord[] = fhirData.entry.map((resourceData: any) => {
                         return {
@@ -129,7 +129,6 @@ export default function Records() {
             .then(res => {
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.entry) {
                     const records: PatientRecord[] = fhirData.entry.map((resourceData: any) => {
                         return {
@@ -176,39 +175,35 @@ export default function Records() {
     } else {
         return (
             
-            <div className='full-width-card ds-u-flex-direction--row'>
-                <h1>Patient Entries</h1>
-                <FHIRPatient patientData={patientRecords}/>
-                <h1>Coverage Entries</h1>
-                <FHIRCoverage />
-                <h1>Condition Entries</h1>
-                <FHIRCondition />        
-                <h1>Diagnostic Report Entries</h1>
-                <FHIRDiagnosticReport />        
+
+
+            <div className='ds-content'>
                 
-                <h2>Observations</h2>
-                <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                    
-                        {observationRecords.map(record => {
-                            return (
-                                <div className="bb-c-card default-card ds-u-margin--2">
-                                <Tabs>
-                                    <TabPanel key="display" id="display" tab="Display">
-                                        <p>TBD Display</p>
-                                    </TabPanel>
-                                    <TabPanel key="source" id="source" tab="Source">
-                                        <ReactJson src={record} collapsed={ true } />
-                                    </TabPanel>
-                                </Tabs>
-                                </div>
-                            )
-                        })}
-                </div>
-
-
+                <Tabs tablistClassName="ds-u-margin-top--3">
+                    <TabPanel id="patient" tab="Patient Records">
+                      <div>
+                        <h2>Patient Entries</h2>
+                        <FHIRPatient patientData={patientRecords}/>               
+                      </div>
+                </TabPanel>
+                <TabPanel id="clinical" tab="Clinical Records">
+                      <div>
+                        <h1>Conditions</h1>
+                        <FHIRCondition />        
+                        <h1>Diagnostic Reports</h1>
+                        <FHIRDiagnosticReport />
+                        <h1>Encounters</h1>
+                        <FHIREncounter />  
+                      </div>
+                </TabPanel>
+                <TabPanel id="administrative" tab="Administrative Records">
+                      <div>
+                        <h1>Explanations Of Benefits</h1>     
+                        <FHIRExplanationOfBenefit />
+                      </div>
+                </TabPanel>
+            </Tabs>
             </div>
-
-
         );
     }
 }
