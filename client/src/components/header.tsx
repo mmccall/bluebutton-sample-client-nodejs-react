@@ -9,7 +9,7 @@ export default function Header() {
             </h1>
             <div className="ds-u-text-align--center">
                 <Badge variation="info" size="big">
-                    Patient Access API Claims and Clinical Data
+                    Patient Access API Clinical and Administrative Data
                 </Badge>
             </div>
         </header>

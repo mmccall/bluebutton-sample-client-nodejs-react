@@ -21,18 +21,23 @@ export default function Patient() {
     const [userProfile, setUserProfile] = useState<Profile>();
     const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : ''
 
+    /**
+     * 
+     * Requests data for a beneficiary
+     * 
+     */
     async function goAuthorize() {
-        
+
         await axios.get(`${test_url}/api/authorize/authurl`)
-        .then(response => {
-            return response.data;
-        })
-        .then(data => {
-            window.location.href = data;
-        })
-        .catch(error => {
-            window.location.href = "/";
-        });
+            .then(response => {
+                return response.data;
+            })
+            .then(data => {
+                window.location.href = data;
+            })
+            .catch(error => {
+                window.location.href = "/";
+            });
     }
 
     /**
@@ -40,7 +45,7 @@ export default function Patient() {
      * 
      */
     async function loadBeneficiaryData(beneficiaryId: String) {
- 
+
         const payload = {
             beneficiaryId: beneficiaryId
         }
@@ -51,17 +56,17 @@ export default function Patient() {
             data: payload,
             headers: {
                 "Content-Type": 'application/json'
-            }            
+            }
         })
-        .then(response => {
-            return response.data;
-        })
-        .then(data => {
-            window.location.href = data;
-        })
-        .catch(error => {
-            console.error(error);
-        });
+            .then(response => {
+                return response.data;
+            })
+            .then(data => {
+                window.location.href = data;
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
     }
 
@@ -90,45 +95,45 @@ export default function Patient() {
         <div className="ds-u-display-flex">
             <h1>User Information</h1>
             <div className="ds-u-display--flex ds-u-justify-content--between">
-            <div className="ds-l-col--5">
-                <div className='ds-u-display--flex ds-u-flex-direction--row ds-u-align-items--start'>
-                    <img src={avatar} alt="Profile avatar" />
-                    <div>
-                    <ul>
-                        <li>Test User</li>
-                        <li>Born 07/18/1978</li>
-                        <li>Raleigh, NC</li>
-                    </ul>
+                <div className="ds-l-col--5">
+                    <div className='ds-u-display--flex ds-u-flex-direction--row ds-u-align-items--start'>
+                        <img src={avatar} alt="Profile avatar" />
+                        <div>
+                            <ul>
+                                <li>Test User</li>
+                                <li>Born 07/18/1978</li>
+                                <li>Raleigh, NC</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className='ds-u-margin-top--2 ds-l-col--4'>
+                        <Button id="auth_btn" variation="solid" onClick={goAuthorize}>Authorize</Button>
                     </div>
                 </div>
-
-                <div className='ds-u-margin-top--2 ds-l-col--4'>
-                    <Button id="auth_btn" variation="solid" onClick={goAuthorize}>Authorize</Button>
+                <div className="ds-l-col--6 bb-c-card ds-u-padding-bottom--2 ds-u-margin-bottom--2">
+                    <h2>NC Account Profile</h2>
+                    <ul>
+                        <li>NCID: {userProfile?.user_ncid}</li>
+                        <li>Subscriber ID: {userProfile?.fhirUser}</li>
+                        <li>Authorized Representative for:
+                            {userProfile?.user_authorizations?.map(authorization => {
+                                return (
+                                    <ul>
+                                        <li key={authorization.firstName}>
+                                            {authorization.firstName} {authorization.lastName}
+                                            <ul>
+                                                <li>{authorization.fhirUser}</li>
+                                                <Button variation="solid" onClick={() => loadBeneficiaryData(authorization.fhirUser)} className="ds-l-col--8" >Load Data</Button>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                )
+                            })}
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div className="ds-l-col--6 bb-c-card ds-u-padding-bottom--2 ds-u-margin-bottom--2">
-                <h2>NC Account Profile</h2>
-                <ul>
-                <li>NCID: {userProfile?.user_ncid}</li>
-                    <li>Subscriber ID: {userProfile?.fhirUser}</li>
-                    <li>Authorized Representative for:
-                    {userProfile?.user_authorizations?.map(authorization => {
-                            return (
-                                <ul>
-                                    <li key={authorization.firstName}>
-                                        {authorization.firstName} {authorization.lastName}
-                                        <ul>
-                                            <li>{authorization.fhirUser}</li>
-                                            <Button variation="solid" onClick={() => loadBeneficiaryData(authorization.fhirUser)} className="ds-l-col--8" >Load Data</Button>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            )
-                        })}
-                    </li>
-                </ul>
-            </div>
-        </div>
         </div>
     );
 }
