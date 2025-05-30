@@ -17,6 +17,7 @@ export type ErrorResponse = {
 export default function FHIREncounter() {
     const [bundleRecords, setBundleRecords] = useState<FHIRRecord[]>([]);
     const [message, setMessage] = useState<ErrorResponse>();
+    const [bundleCount, setBundleCount] = useState(0);
 
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : '';
@@ -28,6 +29,7 @@ export default function FHIREncounter() {
                 return res.json();
             }).then(fhirData => {
                 if (fhirData.resourceType === "Bundle") {
+                    setBundleCount(fhirData.total);
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
                         return {
                             fullUrl: resourceData.fullUrl,
@@ -72,6 +74,7 @@ export default function FHIREncounter() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
+                <div className="ds-l-col--12"><h3>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h3></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">

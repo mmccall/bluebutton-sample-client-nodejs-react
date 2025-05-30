@@ -22,13 +22,12 @@ export default function FHIRCondition() {
     useEffect(() => {
         const test_url = process.env.TEST_APP_API_URL ? process.env.TEST_APP_API_URL : '';
 
-        // get coverage data
         fetch(`${test_url}/api/data/condition`)
             .then(res => {
                 return res.json();
             }).then(fhirData => {
                 if (fhirData.resourceType === "Bundle") {
-                    setBundleCount(fhirData.total)
+                    setBundleCount(fhirData.total);
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
                         return {
                             fullUrl: resourceData.fullUrl,
@@ -73,7 +72,7 @@ export default function FHIRCondition() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h2></div>
+                <div className="ds-l-col--12"><h3>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h3></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">
