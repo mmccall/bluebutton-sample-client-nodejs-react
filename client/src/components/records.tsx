@@ -8,6 +8,7 @@ import FHIRCondition from './fhir/condition';
 import FHIREncounter from './fhir/encounter';
 import FHIRDiagnosticReport from './fhir/diagnosticReport';
 import FHIRExplanationOfBenefit from './fhir/explanationOfBenefit';
+import FHIRHealthcareService from './fhir/healthcareService';
 
 export type EOBRecord = {
     id: string,
@@ -200,6 +201,8 @@ export default function Records() {
                       <div>
                         <h1>Explanations Of Benefits</h1>     
                         <FHIRExplanationOfBenefit />
+                        <h1>Healthcare Service</h1>
+                        <FHIRHealthcareService />
                       </div>
                 </TabPanel>
             </Tabs>
