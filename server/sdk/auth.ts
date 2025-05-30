@@ -89,6 +89,7 @@ export function generateAuthorizeUrl(
     "profile",
     "patient/Condition.read",
     "patient/Coverage.read",
+    "patient/DiagnosticReport.read",
     "patient/Encounter.read",
     "patient/ExplanationOfBenefit.read",
     "patient/HealthcareService.read",
@@ -97,12 +98,17 @@ export function generateAuthorizeUrl(
     "patient/MedicationRequest.read",
     "patient/Observation.read",
     "patient/Organization.read",
-    "patient/OrganizationAffilition.read",
+    "patient/OrganizationAffiliation.read",
     "patient/Patient.read",
     "patient/Practitioner.read",
     "patient/PractitionerRole.read",
     "patient/Procedure.read",
     "patient/ServiceRequest.read",
+    "patient/*.read",
+    "user/ExplanationOfBenefit.read",
+    "user/*.read",
+    "user/Practitioner.read",
+    "patient/*.*"
   ]
 
   // optionally add in patient scope to request for authorized representatives.
@@ -122,7 +128,7 @@ export function generateAuthorizeUrl(
   const fullRequest = `${getAuthorizationUrl(bb)}?client_id=${bb.clientId}&redirect_uri=${bb.callbackUrl
     }&state=${AuthData.state}&${audParam}&${scopeParam}&response_type=code&${pkceParams}`;
 
-  console.log(fullRequest);
+
 
   return fullRequest
 }
@@ -199,17 +205,10 @@ export async function getAuthorizationToken(
 
   const postData = generateTokenPostData(bb, authData, callbackRequestCode);
 
-  //this needs to get a header added for Authorization: Basic, with a base64 encoding of client_id:client_secret
-  //note: removed sdk headers here.
-
-    console.log(getAccessTokenUrl(bb));
-    console.log(postData);
 
     const resp = await doPost(getAccessTokenUrl(bb), postData, {
       headers: authorizationHeaders,
     });
-
-    console.log(resp);
 
 
   if (resp.data) {
