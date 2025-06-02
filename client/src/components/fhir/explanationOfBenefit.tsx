@@ -72,7 +72,7 @@ export default function FHIRExplanationOfBenefit() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                <div><h2>Total Records: {bundleCount}</h2></div>
+                <div className="ds-l-col--12"><h3>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h3></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">
@@ -97,7 +97,7 @@ export default function FHIRExplanationOfBenefit() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Insurer:
+                                                Insurer:
                                             </TableCell>
                                             <TableCell>
                                                 {record.resource.insurer.display}
@@ -108,7 +108,7 @@ export default function FHIRExplanationOfBenefit() {
                                                 Outcome:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.outcome}
+                                                {record.resource.outcome}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>

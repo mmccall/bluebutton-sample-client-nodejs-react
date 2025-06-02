@@ -2,11 +2,6 @@ import express, {Request, Response} from "express";
 import {AuthorizationToken, BlueButton} from "./sdk";
 import * as fs from "fs";
 
-//TODO HERE....  remove and recreate blue button functionality in a standalone js file.
-//LOOK FOR ALL bb. entries and create new functions in a new file that does them.
-//STEAL THE CODE FROM THE MAIN LIBRARY AS NECESSARY.
-//can keep authorizationToken, it's a class and could be useful.
-//need to replace all bluebutton functions.
 
 interface User {
     authToken?: AuthorizationToken,   
@@ -44,7 +39,7 @@ app.use(express.json());
 const bb = new BlueButton();
 const authData = bb.generateAuthData();
 
-// This is where medicare.gov beneficiary associated
+// This is where medicaid beneficiary associated
 // with the current logged in app user,
 // in real app, this could be the app specific
 // account management system
@@ -62,7 +57,6 @@ function clearBB2Data() {
 // access token, expire in, expire at, token type, scope, refreh token, etc.
 // it is associated with current logged in user in real app,
 // check SDK js docs for more details.
-
 let authToken: AuthorizationToken;
 
 // authorization flow for base user.
@@ -74,17 +68,11 @@ app.get("/api/authorize/authurl", (req: Request, res: Response) => {
 app.post("/api/authorize/beneficiary", (req: Request, res: Response) => {
 
   //Post receives the beneficiary id, restructure into custom scope
-  
-
-
   let patientScope = `Patient.r?_id=${req.body.beneficiaryId.replace("Patient/", "")}`;
   console.log(patientScope);
   res.send(bb.generateAuthorizeUrl(authData, patientScope));
 
 });
-
-
-
 
 // auth flow: oauth2 call back
 app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
@@ -110,6 +98,9 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
                 req.query.code,
                 req.query.state
               );
+
+              console.log('----AUTHORIZATION TOKEN-----');
+              console.log(authToken);
               
               // data flow: after access granted
               // the app logic can fetch the beneficiary's data in app specific ways:
@@ -134,7 +125,6 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
               const procedureResults = await bb.getProcedureData(authToken);
               const serviceRequestResults = await bb.getServiceRequestData(authToken);
            
-              //just get authToken from last call if it changed during that.
               authToken = serviceRequestResults.token; // in case authToken got refreshed during fhir call
               loggedInUser.authToken = authToken;
               
@@ -157,6 +147,7 @@ app.get("/api/bluebutton/callback", (req: Request, res: Response) => {
               loggedInUser.procedureData = procedureResults.response?.data;
               loggedInUser.serviceRequestData = serviceRequestResults.response?.data;
 
+              console.log('-----USER AND RETRIEVED DATA-----')
               console.log(loggedInUser);
 
             } catch (e) {
@@ -197,24 +188,6 @@ function loadDataFile(dataset_name: string, resource_file_name: string): any {
         return null
     }
 }
-
-app.post("/api/beneficiaryData",(req: Request, res: Response) => {
-  console.log(req.body);
-  //get beneficiary ID, and inject it as 
-  // we don't need this endpoint, just define the Patient resource on the request.
-
-
-});
-
-
-
-// Retire me...
-app.get("/api/data/benefit", (req: Request, res: Response) => {
-  if (loggedInUser.eobData) {
-    res.json(loggedInUser.eobData);
-  }
-});
-
 
 /**
  * Data endpoints

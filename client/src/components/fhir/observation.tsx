@@ -28,7 +28,6 @@ export default function FHIRObservation() {
                 console.log(res);
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.resourceType === "Bundle") {
                     setBundleCount(fhirData.total)
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
@@ -41,8 +40,7 @@ export default function FHIRObservation() {
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
-                        console.log(fhirData.issue);
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                        setMessage({ "type": fhirData.issue[0].details.coding[0].code, "content": fhirData.issue[0].details.coding[0].system || "Unknown" })
                     }
                 }
             });
@@ -55,16 +53,16 @@ export default function FHIRObservation() {
                     <TableCaption>Error Response</TableCaption>
                     <TableHead>
                         <TableRow>
-                            <TableCell id="column_1">Type</TableCell>
-                            <TableCell id="column_2">Content</TableCell>
+                            <TableCell id="column_1">Error Code</TableCell>
+                            <TableCell id="column_2">Code System</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell stackedTitle="Type" headers="column_1">
+                            <TableCell stackedTitle="Error Code" headers="column_1">
                                 {message.type}
                             </TableCell>
-                            <TableCell stackedTitle="Content" headers="column_2">
+                            <TableCell stackedTitle="Code System" headers="column_2">
                                 {message.content}
                             </TableCell>
                         </TableRow>
@@ -100,7 +98,7 @@ export default function FHIRObservation() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Name:
+                                                Name:
                                             </TableCell>
                                             <TableCell>
                                                 {record.resource.code.text}
@@ -111,7 +109,7 @@ export default function FHIRObservation() {
                                                 Date:
                                             </TableCell>
                                             <TableCell>
-                                              {record.resource.effectiveDateTime}
+                                                {record.resource.effectiveDateTime}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -119,7 +117,7 @@ export default function FHIRObservation() {
                                                 Category:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.category?.[0].text}
+                                                {record.resource.category?.[0].text}
                                             </TableCell>
                                         </TableRow>
                                     </Table>

@@ -38,8 +38,7 @@ export default function FHIRCondition() {
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
-                        console.log(fhirData.issue);
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                        setMessage({ "type": fhirData.issue[0].details.coding[0].code, "content": fhirData.issue[0].details.coding[0].system || "Unknown" })
                     }
                 }
             });
@@ -52,16 +51,16 @@ export default function FHIRCondition() {
                     <TableCaption>Error Response</TableCaption>
                     <TableHead>
                         <TableRow>
-                            <TableCell id="column_1">Type</TableCell>
-                            <TableCell id="column_2">Content</TableCell>
+                            <TableCell id="column_1">Error Code</TableCell>
+                            <TableCell id="column_2">Code System</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell stackedTitle="Type" headers="column_1">
+                            <TableCell stackedTitle="Error Code" headers="column_1">
                                 {message.type}
                             </TableCell>
-                            <TableCell stackedTitle="Content" headers="column_2">
+                            <TableCell stackedTitle="Code System" headers="column_2">
                                 {message.content}
                             </TableCell>
                         </TableRow>
@@ -97,7 +96,7 @@ export default function FHIRCondition() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Condition Name:
+                                                Condition Name:
                                             </TableCell>
                                             <TableCell>
                                                 {record.resource.code?.text}

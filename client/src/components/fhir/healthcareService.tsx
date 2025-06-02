@@ -41,8 +41,7 @@ export default function FHIRHealthcareService() {
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
-                        console.log(fhirData.issue);
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                        setMessage({ "type": fhirData.issue[0].details.coding[0].code, "content": fhirData.issue[0].details.coding[0].system || "Unknown" })
                     }
                 }
             });
@@ -55,16 +54,16 @@ export default function FHIRHealthcareService() {
                     <TableCaption>Error Response</TableCaption>
                     <TableHead>
                         <TableRow>
-                            <TableCell id="column_1">Type</TableCell>
-                            <TableCell id="column_2">Content</TableCell>
+                            <TableCell id="column_1">Error Code</TableCell>
+                            <TableCell id="column_2">Code System</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell stackedTitle="Type" headers="column_1">
+                            <TableCell stackedTitle="Error Code" headers="column_1">
                                 {message.type}
                             </TableCell>
-                            <TableCell stackedTitle="Content" headers="column_2">
+                            <TableCell stackedTitle="Code System" headers="column_2">
                                 {message.content}
                             </TableCell>
                         </TableRow>
@@ -75,7 +74,7 @@ export default function FHIRHealthcareService() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}</h2></div>
+                <div className="ds-l-col--12"><h3>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h3></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">
@@ -100,7 +99,7 @@ export default function FHIRHealthcareService() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Identifier:
+                                                Identifier:
                                             </TableCell>
                                             <TableCell>
                                                 {record.resource.identifier?.[0].value}
@@ -111,7 +110,7 @@ export default function FHIRHealthcareService() {
                                                 Identifier Two:
                                             </TableCell>
                                             <TableCell>
-                                              {record.resource.identifier?.[1].value}
+                                                {record.resource.identifier?.[1].value}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -119,7 +118,7 @@ export default function FHIRHealthcareService() {
                                                 id:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.id}
+                                                {record.resource.id}
                                             </TableCell>
                                         </TableRow>
                                     </Table>

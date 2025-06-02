@@ -78,7 +78,6 @@ export default function Patient() {
             .then(res => {
                 return res.json();
             }).then(profileData => {
-                console.log(profileData);
                 setUserProfile(profileData);
             });
     }, [])
@@ -107,8 +106,8 @@ export default function Patient() {
                         </div>
                     </div>
 
-                    <div className='ds-u-margin-top--2 ds-l-col--4'>
-                        <Button id="auth_btn" variation="solid" onClick={goAuthorize}>Authorize</Button>
+                    <div className='ds-u-margin--2 ds-l-col--8'>
+                        <Button id="auth_btn" variation="solid" className="ds-u-margin--2 ds-l-col--8" onClick={goAuthorize}>Authorize</Button>
                     </div>
                 </div>
                 <div className="ds-l-col--6 bb-c-card ds-u-padding-bottom--2 ds-u-margin-bottom--2">
@@ -124,7 +123,7 @@ export default function Patient() {
                                             {authorization.firstName} {authorization.lastName}
                                             <ul>
                                                 <li>{authorization.fhirUser}</li>
-                                                <Button variation="solid" onClick={() => loadBeneficiaryData(authorization.fhirUser)} className="ds-l-col--8" >Load Data</Button>
+                                                <Button variation="solid" onClick={() => loadBeneficiaryData(authorization.fhirUser)} className="ds-l-col--6" >Load Data</Button>
                                             </ul>
                                         </li>
                                     </ul>

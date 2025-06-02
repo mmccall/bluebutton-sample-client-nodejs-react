@@ -41,8 +41,7 @@ export default function FHIROrganization() {
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
-                        console.log(fhirData.issue);
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                        setMessage({ "type": fhirData.issue[0].details.coding[0].code, "content": fhirData.issue[0].details.coding[0].system || "Unknown" })
                     }
                 }
             });
@@ -55,16 +54,16 @@ export default function FHIROrganization() {
                     <TableCaption>Error Response</TableCaption>
                     <TableHead>
                         <TableRow>
-                            <TableCell id="column_1">Type</TableCell>
-                            <TableCell id="column_2">Content</TableCell>
+                            <TableCell id="column_1">Error Code</TableCell>
+                            <TableCell id="column_2">Code System</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell stackedTitle="Type" headers="column_1">
+                            <TableCell stackedTitle="Error Code" headers="column_1">
                                 {message.type}
                             </TableCell>
-                            <TableCell stackedTitle="Content" headers="column_2">
+                            <TableCell stackedTitle="Code System" headers="column_2">
                                 {message.content}
                             </TableCell>
                         </TableRow>
@@ -75,7 +74,7 @@ export default function FHIROrganization() {
     } else {
         return (
             <div className="ds-u-display--flex ds-u-flex-direction--column ds-u-lg-flex-direction--row ds-u-flex-wrap--nowrap ds-u-lg-flex-wrap--wrap">
-                <div className="ds-l-col--12"><h2>Total Records: {bundleCount}</h2></div>
+                <div className="ds-l-col--12"><h3>Total Records: {bundleCount}{bundleCount > 10 && ', displaying first 10'}</h3></div>
                 {bundleRecords.map(record => {
                     return (
                         <div className="default-card ds-u-margin--2">
@@ -100,10 +99,10 @@ export default function FHIROrganization() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Name:
+                                                Name:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.name}
+                                                {record.resource.name}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -111,7 +110,7 @@ export default function FHIROrganization() {
                                                 Active:
                                             </TableCell>
                                             <TableCell>
-                                              {record.resource.active && 'true'}
+                                                {record.resource.active && 'true'}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -119,7 +118,7 @@ export default function FHIROrganization() {
                                                 Last Updated:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.meta?.lastUpdated}
+                                                {record.resource.meta?.lastUpdated}
                                             </TableCell>
                                         </TableRow>
                                     </Table>

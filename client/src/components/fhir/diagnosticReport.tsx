@@ -39,7 +39,7 @@ export default function FHIRDiagnosticReport() {
                 }
                 else {
                     if (fhirData.resourceType === "OperationOutcome") {
-                        setMessage({ "type": "error", "content": fhirData.message || "Unknown" })
+                        setMessage({ "type": fhirData.issue[0].details.coding[0].code, "content": fhirData.issue[0].details.coding[0].system || "Unknown" })
                     }
                 }
             });
@@ -52,16 +52,16 @@ export default function FHIRDiagnosticReport() {
                     <TableCaption>Error Response</TableCaption>
                     <TableHead>
                         <TableRow>
-                            <TableCell id="column_1">Type</TableCell>
-                            <TableCell id="column_2">Content</TableCell>
+                            <TableCell id="column_1">Error Code</TableCell>
+                            <TableCell id="column_2">Code System</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell stackedTitle="Type" headers="column_1">
+                            <TableCell stackedTitle="Error Code" headers="column_1">
                                 {message.type}
                             </TableCell>
-                            <TableCell stackedTitle="Content" headers="column_2">
+                            <TableCell stackedTitle="Code System" headers="column_2">
                                 {message.content}
                             </TableCell>
                         </TableRow>
@@ -97,10 +97,10 @@ export default function FHIRDiagnosticReport() {
                                         </TableHead>
                                         <TableRow>
                                             <TableCell>
-                                               Diagnostic Test:
+                                                Diagnostic Test:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.code.text}
+                                                {record.resource.code.text}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -116,7 +116,7 @@ export default function FHIRDiagnosticReport() {
                                                 Result Reference:
                                             </TableCell>
                                             <TableCell>
-                                               {record.resource.category?.[0].text}
+                                                {record.resource.category?.[0].text}
                                             </TableCell>
                                         </TableRow>
                                     </Table>
