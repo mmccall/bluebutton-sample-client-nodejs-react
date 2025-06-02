@@ -25,10 +25,8 @@ export default function FHIRLocation() {
         // get coverage data
         fetch(`${test_url}/api/data/location`)
             .then(res => {
-                console.log(res);
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.resourceType === "Bundle") {
                     setBundleCount(fhirData.total)
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {

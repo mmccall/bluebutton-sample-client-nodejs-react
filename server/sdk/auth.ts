@@ -118,8 +118,6 @@ export function generateAuthorizeUrl(
 
   const scopesString = scopesArray.toString().replace(/,/g, " ");
 
-  console.log(scopesString);
-
   // TODO: make scope params an array that we can stringify.
   const scopeParam = qs.stringify( {'scope': scopesString})
 

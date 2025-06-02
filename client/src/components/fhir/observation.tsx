@@ -25,7 +25,6 @@ export default function FHIRObservation() {
         // get coverage data
         fetch(`${test_url}/api/data/observation`)
             .then(res => {
-                console.log(res);
                 return res.json();
             }).then(fhirData => {
                 if (fhirData.resourceType === "Bundle") {

@@ -27,7 +27,6 @@ export default function FHIRServiceRequest() {
             .then(res => {
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.resourceType === "Bundle") {
                     setBundleCount(fhirData.total)
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
@@ -97,26 +96,26 @@ export default function FHIRServiceRequest() {
                                             </TableRow>
                                         </TableHead>
                                         <TableRow>
-                                            <TableCell>
+                                            <TableCell key="exampleOneTitle" id="exampleOneTitle">
                                                 Procedure:
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell key="exampleOneValue" id="exampleOneValue">
                                                 {record.resource.code?.text}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell>
+                                            <TableCell key="exampleTwoTitle" id="exampleTwoTitle">
                                                 Date:
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell key="exampleTwoValue" id="exampleTwoValue">
                                                 {record.resource.authoredOn}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell>
+                                            <TableCell key="exampleThreeTitle" id="exampleThreeTitle">
                                                 Status:
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell key="exampleThreeValue" id="exampleThreeValue">
                                                 {record.resource.status}
                                             </TableCell>
                                         </TableRow>

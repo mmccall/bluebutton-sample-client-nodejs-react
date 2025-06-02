@@ -27,7 +27,6 @@ export default function FHIRPractitioner() {
             .then(res => {
                 return res.json();
             }).then(fhirData => {
-                console.log(fhirData);
                 if (fhirData.resourceType === "Bundle") {
                     setBundleCount(fhirData.total)
                     const records: FHIRRecord[] = fhirData.entry.map((resourceData: any) => {
